@@ -27,8 +27,6 @@
     removeHighlights()
     document.body.style.backgroundColor=colors[0]
     damaGrid.querySelectorAll(".piece").forEach(piece => piece.remove());
-    blackScore = 0;
-    whiteScore = 0;
     updateScores();
     turnOf = 0;
     locked = false;
@@ -394,6 +392,7 @@ music.addEventListener("ended", () => {
   updateScores();
 
   
+
 
 
 
