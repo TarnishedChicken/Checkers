@@ -2,6 +2,10 @@
     background-color: #18191A;
     /* font-family: monospace; */
   }
+
+  body{
+    transition: background ease 0.3s;
+  }
   
   .con {
     display: flex;
@@ -97,7 +101,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  background-color: transparent;
+  background-color: #18191A;
   padding: 10px 18px;
   border-radius: 10px;
   border: 2px solid #E8D2AF;
@@ -117,8 +121,8 @@
   font-size: 20px;
   color: white;
   font-family: monospace;
-
 }
+
 
 
 #restartBtn{
@@ -242,7 +246,7 @@
    margin-top: 10px;
    align-items: center;
    gap: 14px;
-   background: transparent;
+   background: #18191A;
    padding: 5px 10px;
    border-radius: 8px;
    border: 3px solid #AF8460;
@@ -251,8 +255,9 @@
  }
  
  #musicPlayer label {
-   color: #E8D2AF;
+   color: #E8D2AF;;
    font-weight: bold;
+   background-color: transparent;
    font-size: 18px;
    font-family: monospace;
  }
