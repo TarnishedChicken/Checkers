@@ -339,15 +339,15 @@
     const musicMute = document.getElementById("musicMute");
     const musicVolume = document.getElementById("musicVolume");
     const musicTracks = [
-  "/sfx/8bit1.mp3",
-  "/sfx/8bit2.mp3",
-  "/sfx/8bit3.mp3",
-  "/sfx/8bit4.mp3",
-  "/sfx/8bit5.mp3",
-  "/sfx/8bit6.mp3",
-  "/sfx/8bit7.mp3",
-  "/sfx/8bit8.mp3",
-  "/sfx/8bit9.mp3"
+  "8bit1.mp3",
+  "8bit2.mp3",
+  "8bit3.mp3",
+  "8bit4.mp3",
+  "8bit5.mp3",
+  "8bit6.mp3",
+  "8bit7.mp3",
+  "8bit8.mp3",
+  "8bit9.mp3"
 ];
 let currentTrackIndex = 0;
 let isMuted = false;
@@ -394,5 +394,6 @@ music.addEventListener("ended", () => {
   updateScores();
 
   
+
 
 
