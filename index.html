@@ -6,7 +6,7 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="icon/checker.png">
   <link rel="stylesheet" href="board.css">
-  <title>Dama</title>
+  <title>Checkers</title>
 </head>
 <body>
   <div id="scoreContainer">
@@ -96,15 +96,15 @@
   <div id="musicPlayer">
     <label for="musicSelect">Music:</label>
     <select id="musicSelect">
-      <option value="/sfx/8bit1.mp3">8.bit 1</option>
-      <option value="/sfx/8bit2.mp3">8.bit 2</option>
-      <option value="/sfx/8bit3.mp3">8.bit 3</option>
-      <option value="/sfx/8bit4.mp3">8.bit 4</option>
-      <option value="/sfx/8bit5.mp3">8.bit 5</option>
-      <option value="/sfx/8bit6.mp3">8.bit 6</option>
-      <option value="/sfx/8bit7.mp3">8.bit 7</option>
-      <option value="/sfx/8bit8.mp3">8.bit 8</option>
-      <option value="/sfx/8bit9.mp3">8.bit 9</option>
+      <option value="8bit1.mp3">8.bit 1</option>
+      <option value="8bit2.mp3">8.bit 2</option>
+      <option value="8bit3.mp3">8.bit 3</option>
+      <option value="8bit4.mp3">8.bit 4</option>
+      <option value="8bit5.mp3">8.bit 5</option>
+      <option value="8bit6.mp3">8.bit 6</option>
+      <option value="8bit7.mp3">8.bit 7</option>
+      <option value="8bit8.mp3">8.bit 8</option>
+      <option value="8bit9.mp3">8.bit 9</option>
     </select>
     <button id="musicMute"><i class="ri-volume-up-fill"></i></button>
     <input type="range" id="musicVolume" min="0" max="1" step="0.01" value="0.5">
@@ -117,14 +117,15 @@
     </div>
   </div>
 
-  <audio src="/sfx/8bit1.mp3" id="music"></audio>
-  <audio src="/sfx/Vic.mp3" id="victoryMusic"></audio>
-  <audio src="/sfx/damasfx.mp3" id="sfx"></audio>
-  <audio src="/sfx/take.mp3" id="take"></audio>
-  <audio src="/sfx/BKing.mp3" id="Bking"></audio>
+  <audio src="8bit1.mp3" id="music"></audio>
+  <audio src="Vic.mp3" id="victoryMusic"></audio>
+  <audio src="damasfx.mp3" id="sfx"></audio>
+  <audio src="take.mp3" id="take"></audio>
+  <audio src="BKing.mp3" id="Bking"></audio>
 
   <script src="dama.js"></script>
 </body>
 </html>
+
 
 
