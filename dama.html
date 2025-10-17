@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="/icon/checker.png">
+  <link rel="stylesheet" href="/board.css">
+  <title>Dama</title>
+</head>
+<body>
+  <div id="scoreContainer">
+    <div>
+      <span id="Score2">Black: </span><span id="blackScore">0</span>
+      &nbsp;|&nbsp;
+      <span id="Score1">White: </span><span id="whiteScore">0</span>
+    </div>
+    <button id="restartBtn"><i class="ri-refresh-fill re-icon"></i></button>
+  </div>
+
+  <div class="dama-container">
+    <div class="con con01"></div>
+    <div class="con con02"></div>
+    <div class="con con03"></div>
+    <div class="con con04"></div>
+    <div class="con con05"></div>
+    <div class="con con06"></div>
+    <div class="con con07"></div>
+    <div class="con con08"></div>
+
+    <div class="con con2"></div>
+    <div class="con con10 con2"></div>
+    <div class="con con11 con2"></div>
+    <div class="con con12 con2"></div>
+    <div class="con con13 con2"></div>
+    <div class="con con14 con2"></div>
+    <div class="con con15 con2"></div>
+    <div class="con con16 con2"></div>
+
+    <div class="con con17"></div>
+    <div class="con con18"></div>
+    <div class="con con19"></div>
+    <div class="con con20"></div>
+    <div class="con con21"></div>
+    <div class="con con22"></div>
+    <div class="con con23"></div>
+    <div class="con con24"></div>
+
+    <div class="con con25 con2"></div>
+    <div class="con con26 con2"></div>
+    <div class="con con27 con2"></div>
+    <div class="con con28 con2"></div>
+    <div class="con con29 con2"></div>
+    <div class="con con30 con2"></div>
+    <div class="con con31 con2"></div>
+    <div class="con con32 con2"></div>
+
+    <div class="con con33"></div>
+    <div class="con con34"></div>
+    <div class="con con35"></div>
+    <div class="con con36"></div>
+    <div class="con con37"></div>
+    <div class="con con38"></div>
+    <div class="con con39"></div>
+    <div class="con con40"></div>
+
+    <div class="con con41 con2"></div>
+    <div class="con con42 con2"></div>
+    <div class="con con43 con2"></div>
+    <div class="con con44 con2"></div>
+    <div class="con con45 con2"></div>
+    <div class="con con46 con2"></div>
+    <div class="con con47 con2"></div>
+    <div class="con con48 con2"></div>
+
+    <div class="con con49"></div>
+    <div class="con con50"></div>
+    <div class="con con51"></div>
+    <div class="con con52"></div>
+    <div class="con con53"></div>
+    <div class="con con54"></div>
+    <div class="con con55"></div>
+    <div class="con con56"></div>
+
+    <div class="con con57 con2"></div>
+    <div class="con con58 con2"></div>
+    <div class="con con59 con2"></div>
+    <div class="con con60 con2"></div>
+    <div class="con con61 con2"></div>
+    <div class="con con62 con2"></div>
+    <div class="con con63 con2"></div>
+    <div class="con con64 con2"></div>
+  </div>
+
+  <!-- ==================== Music Player ==================== -->
+  <div id="musicPlayer">
+    <label for="musicSelect">Music:</label>
+    <select id="musicSelect">
+      <option value="/sfx/8bit1.mp3">8.bit 1</option>
+      <option value="/sfx/8bit2.mp3">8.bit 2</option>
+      <option value="/sfx/8bit3.mp3">8.bit 3</option>
+      <option value="/sfx/8bit4.mp3">8.bit 4</option>
+      <option value="/sfx/8bit5.mp3">8.bit 5</option>
+      <option value="/sfx/8bit6.mp3">8.bit 6</option>
+      <option value="/sfx/8bit7.mp3">8.bit 7</option>
+      <option value="/sfx/8bit8.mp3">8.bit 8</option>
+      <option value="/sfx/8bit9.mp3">8.bit 9</option>
+    </select>
+    <button id="musicMute"><i class="ri-volume-up-fill"></i></button>
+    <input type="range" id="musicVolume" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <div id="winnerModal">
+    <div class="winner-content">
+      <h2 id="winnerText">Winner!</h2>
+      <button id="closeWinnerBtn">OK</button>
+    </div>
+  </div>
+
+  <audio src="/sfx/8bit1.mp3" id="music"></audio>
+  <audio src="/sfx/Vic.mp3" id="victoryMusic"></audio>
+  <audio src="/sfx/damasfx.mp3" id="sfx"></audio>
+  <audio src="/sfx/take.mp3" id="take"></audio>
+  <audio src="/sfx/BKing.mp3" id="Bking"></audio>
+
+  <script src="/dama.js"></script>
+</body>
+</html>
