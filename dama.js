@@ -23,6 +23,52 @@
     static elem=null
     static color=null
    }
+   function resetGame(){
+    removeHighlights()
+    document.body.style.backgroundColor=colors[0]
+    damaGrid.querySelectorAll(".piece").forEach(piece => piece.remove());
+    blackScore = 0;
+    whiteScore = 0;
+    updateScores();
+    turnOf = 0;
+    locked = false;
+    highlights = [];
+    Move.elem = null;
+    Move.color = null;
+    //==================== Recreate pieces ====================
+    var inEoO=0;
+    for(let i=0;i<8;i++){
+      if(i==3){
+        i+=2
+      }
+      for(let j=inEoO;j<8;j+=2){
+        var piece=createPiece()
+        let color=(i<3)? colors[1]:colors[0]
+        piece.x=j
+        piece.y=i
+        piece.color=color
+        piece.classList.add(color)
+        piece.isKing=false
+        piece.classList.add("piece")
+        let des=document.createElement("div")
+        des.classList.add("design")
+        piece.appendChild(des)
+        piece.addEventListener("click",e=>{
+          if(colors.indexOf(e.target.color)!=turnOf||locked) return
+          damasfx.currentTime=0.5
+          damasfx.play()
+          removeHighlights()
+          Move.elem=e.target
+          Move.color=e.target.color
+          Move.elem.classList.remove(Move.color);
+          Move.elem.classList.add("highlighted")
+          initMoves(e.target)
+        })
+        damaGrid.querySelectorAll(".con")[i*8+j%8].appendChild(piece)
+      }
+      inEoO=(inEoO+1)%2
+    }
+  }
    let colors= ["black","white"];
    function createPiece(){
     var piece=document.createElement("div")
@@ -125,6 +171,7 @@
         removeHighlights();
         checkKing(elem)
         turnOf = (turnOf + 1) % 2
+        document.body.style.backgroundColor=colors[turnOf]
         con.appendChild(elem);
         checkWinner();
       });
@@ -174,6 +221,7 @@
         checkKing(elem);
         con.appendChild(elem);
         turnOf = (turnOf + 1) % 2;
+        document.body.style.backgroundColor=colors[turnOf]
         checkWinner();
       });
       let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x];
@@ -250,50 +298,8 @@
 
   // Reset
   restartBtn.addEventListener("click", () => {
-    damaGrid.querySelectorAll(".piece").forEach(piece => piece.remove());
-    blackScore = 0;
-    whiteScore = 0;
-    updateScores();
-    turnOf = 0;
-    locked = false;
-    highlights = [];
-    Move.elem = null;
-    Move.color = null;
-    //==================== Recreate pieces ====================
-    var inEoO=0;
-    for(let i=0;i<8;i++){
-      if(i==3){
-        i+=2
-      }
-      for(let j=inEoO;j<8;j+=2){
-        var piece=createPiece()
-        let color=(i<3)? colors[1]:colors[0]
-        piece.x=j
-        piece.y=i
-        piece.color=color
-        piece.classList.add(color)
-        piece.isKing=false
-        piece.classList.add("piece")
-        let des=document.createElement("div")
-        des.classList.add("design")
-        piece.appendChild(des)
-        piece.addEventListener("click",e=>{
-          if(colors.indexOf(e.target.color)!=turnOf||locked) return
-          damasfx.currentTime=0.5
-          damasfx.play()
-          removeHighlights()
-          Move.elem=e.target
-          Move.color=e.target.color
-          Move.elem.classList.remove(Move.color);
-          Move.elem.classList.add("highlighted")
-          initMoves(e.target)
-        })
-        damaGrid.querySelectorAll(".con")[i*8+j%8].appendChild(piece)
-      }
-      inEoO=(inEoO+1)%2;
-    }
-  });
-
+    resetGame()
+  })
   const winnerModal = document.getElementById("winnerModal");
   const winnerText = document.getElementById("winnerText");
   const closeWinnerBtn = document.getElementById("closeWinnerBtn");
@@ -367,7 +373,7 @@ musicSelect.addEventListener("change", () => {
   music.play();
 });
 
-// ======== max on load ========
+// ======== volume on load ========
 window.addEventListener("DOMContentLoaded", () => {
   musicVolume.value = 0.5;
   music.volume = 0.5;
@@ -386,3 +392,7 @@ music.addEventListener("ended", () => {
 });
 
   updateScores();
+
+  
+
+
