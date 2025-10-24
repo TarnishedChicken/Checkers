@@ -261,7 +261,7 @@
    display: flex;
    margin: auto;
    margin-top: 10px;
-   align-items: center;
+   align-items: right;
    gap: 14px;
    background: #18191A;
    padding: 5px 10px;
