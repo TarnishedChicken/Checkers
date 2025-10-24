@@ -294,9 +294,8 @@ function initHighlights() {
           elem.classList.add("highlighted");
           locked = true;
           sfx.currentTime = 0;
-          sfx.play();
-          if(againstComputer&&((turnOf+1)%2)==computerTurn)turnOf=(turnOf+1)%2 
-          startTurn()
+          sfx.play()
+          startTurn(elem)
           return;
         }
         removeHighlights();
@@ -418,24 +417,27 @@ function setPlayer(n){
       againstComputer=true
   }
 }
-function startTurn(){
+function startTurn(elem){
   if(againstComputer&&turnOf==computerTurn){
     let allPossibleMoves=[]
     let count=0
     let pieces = document.querySelectorAll(".piece")
-    console.log(pieces)
+    if(locked) {
+      removeHighlights()
+      initMoves(elem,true)
+      highlights[0].highlight.click()
+      removeHighlights()
+      return
+    }
     for(let piece of pieces){
-      turnOf=(turnOf+1)%2
-      if(piece.color==colors[(turnOf+1)%2]) continue
+      if(piece.color!=colors[turnOf]) continue
       initMoves(piece)
       for(let move of highlights){
         if(move===undefined) continue
         allPossibleMoves[count++]=move
       }
     }
-    console.log(allPossibleMoves)
-    console.log(Math.random()*allPossibleMoves.length)
-    let selectedmove=allPossibleMoves[Math.floor(Math.random()*allPossibleMoves.length),1]
+    let selectedmove=allPossibleMoves[Math.floor(Math.random()*allPossibleMoves.length)]
     highlights=allPossibleMoves
     selectedmove.highlight.click()
     removeHighlights()
