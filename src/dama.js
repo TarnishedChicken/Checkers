@@ -41,8 +41,7 @@ class Move{
    this.y=y
    this.type=type
  }
- static elem=null
- static color=null
+  elem=null
 }
 
 //global elements
@@ -50,17 +49,18 @@ const Bking = document.getElementById("Bking")
 const damasfx=document.querySelector("#sfx")
 const deatsfx=document.querySelector("#death")
 const damaGrid=document.querySelector(".dama-container")
+const menuOverlay=document.querySelector("#overlay-menu")
 const blackScoreElem = document.getElementById("blackScore")
 const whiteScoreElem = document.getElementById("whiteScore")
 const restartBtn = document.getElementById("restartBtn")
-const winnerModal = document.getElementById("winnerModal");
-const winnerText = document.getElementById("winnerText");
-const closeWinnerBtn = document.getElementById("closeWinnerBtn");
-const victoryMusic = document.getElementById("victoryMusic");
-const music = document.getElementById("music");
-const musicSelect = document.getElementById("musicSelect");
-const musicMute = document.getElementById("musicMute");
-const musicVolume = document.getElementById("musicVolume");
+const winnerModal = document.getElementById("winnerModal")
+const winnerText = document.getElementById("winnerText")
+const closeWinnerBtn = document.getElementById("closeWinnerBtn")
+const victoryMusic = document.getElementById("victoryMusic")
+const music = document.getElementById("music")
+const musicSelect = document.getElementById("musicSelect")
+const musicMute = document.getElementById("musicMute")
+const musicVolume = document.getElementById("musicVolume")
 
 //global constants
 const WIDTH=8
@@ -90,6 +90,8 @@ var currentTrackIndex = 0;
 var isMuted = false;
 var cHandler=new CookieHandler()
 var repCount=0
+var againstComputer=false
+var computerTurn=1
 
 //init events
 restartBtn.addEventListener("click",() =>resetGame())
@@ -107,7 +109,7 @@ musicSelect.addEventListener("change", () => {
   const selectedSrc = musicSelect.value;
   currentTrackIndex = musicTracks.indexOf(selectedSrc);
   if (currentTrackIndex === -1) currentTrackIndex = 0;
-  music.src = musicTracks[currentTrackIndex];
+  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
   music.play();
 });
 // ======== volume on load ========
@@ -116,17 +118,16 @@ window.addEventListener("DOMContentLoaded", () => {
   music.volume = 0.5;
   music.muted = false;
   currentTrackIndex = 0;
-  music.src = musicTracks[currentTrackIndex];
+  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
   music.play();
 });
 // ======== play next track and loop ========
 music.addEventListener("ended", () => {
   currentTrackIndex = (currentTrackIndex + 1) % musicTracks.length;
-  music.src = musicTracks[currentTrackIndex];
+  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
   musicSelect.value = musicTracks[currentTrackIndex];
   music.play();
 });
-
 //Functions
 //Reset Game State and Pieces
 function resetGame(){
@@ -136,8 +137,6 @@ function resetGame(){
   turnOf = 0;
   locked = false;
   highlights = [];
-  Move.elem = null;
-  Move.color = null;
   let inEoO=0;
   for(let i=0;i<8;i++){
     if(i==3){
@@ -160,10 +159,8 @@ function resetGame(){
         damasfx.currentTime=0.5
         damasfx.play()
         removeHighlights()
-        Move.elem=e.target
-        Move.color=e.target.color
-        Move.elem.classList.remove(Move.color);
-        Move.elem.classList.add("highlighted")
+        piece.classList.remove(piece.color);
+        piece.classList.add("highlighted")
         initMoves(e.target)
       })
       damaGrid.querySelectorAll(".con")[i*8+j%8].appendChild(piece)
@@ -188,8 +185,10 @@ function move(dx,dy,elem){
   let con= damaGrid.querySelectorAll(".con")[y*WIDTH+x]
   let piece=con.querySelector(".piece")
   if(piece==null){
-    return new Move(x,y,0)
-  }else if(piece.color!=Move.color){
+    let move=new Move(x,y,0)
+    move.elem=elem
+    return move
+  }else if(piece.color!=elem.color){
     return attack(dx,dy,elem)
   }
 }
@@ -210,6 +209,7 @@ function attack(dx,dy,elem){
     let conAtt=damaGrid.querySelectorAll(".con")[y*WIDTH+x]
     let pieceAtt=conAtt.querySelector(".piece");
     attMove.attPiece=pieceAtt
+    attMove.elem=elem
     return attMove
   }
   return -1
@@ -221,12 +221,16 @@ function initMoves(piece,removeNonAtt){
  let y=piece.y
  let color=piece.color
  if(colors.indexOf(color)==0||piece.isKing){3
-   highlights[highlights.length]=move(1,-1,piece)
-   highlights[highlights.length]=move(-1,-1,piece)
+   let m=move(-1,-1,piece)
+   if(m!==-1) highlights[highlights.length]=m
+   m=move(1,-1,piece)
+   if(m!==-1) highlights[highlights.length]=m
  }
  if(colors.indexOf(color)==1||piece.isKing){
-   highlights[highlights.length]=move(1,1,piece)
-   highlights[highlights.length]=move(-1,1,piece)
+   let m=move(1,1,piece)
+   if(m!==-1) highlights[highlights.length]=m
+   m=move(-1,1,piece)
+   if(m!==-1) highlights[highlights.length]=m
  }
  if(removeNonAtt!=null) removeNonAttacks()
  initHighlights()
@@ -243,7 +247,7 @@ function initHighlights() {
       highlight.addEventListener("click", e => {
         let move = e.target.move
         let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x]
-        let elem = Move.elem
+        let elem = move.elem
         elem.x = move.x
         elem.y = move.y
         removeHighlights()
@@ -254,6 +258,7 @@ function initHighlights() {
         repCount++
         if(repCount==30) resetGame()
         checkWinner()
+        startTurn()
       })
       let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x]
       con.appendChild(highlight)
@@ -264,7 +269,7 @@ function initHighlights() {
         sfx.play()
         let move = e.target.move
         let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x]
-        let elem = Move.elem
+        let elem = move.elem
         elem.x = move.x
         elem.y = move.y
         let capturedPiece = move.attPiece
@@ -274,7 +279,7 @@ function initHighlights() {
           take.volume = 1
           take.play()
         }
-        con2.removeChild(con2.childNodes[0])
+        let rpiece=con2.removeChild(con2.childNodes[0])
         //==================== Update score ====================
         if (elem.color === "black") {
           blackScore++;
@@ -290,6 +295,8 @@ function initHighlights() {
           locked = true;
           sfx.currentTime = 0;
           sfx.play();
+          if(againstComputer&&((turnOf+1)%2)==computerTurn)turnOf=(turnOf+1)%2 
+          startTurn()
           return;
         }
         removeHighlights();
@@ -300,10 +307,12 @@ function initHighlights() {
         document.body.style.backgroundColor=colors[turnOf]
         repCount=0
         checkWinner();
+        startTurn()
       });
-      let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x];
-      con.appendChild(highlight);
+      let con = damaGrid.querySelectorAll(".con")[move.y * WIDTH + move.x]
+      con.appendChild(highlight)
     }
+    move.highlight=highlight
   }
 }
 
@@ -343,12 +352,11 @@ function checkKing(elem){
 
 //Removes highlights after a move or a different piece is picked
 function removeHighlights(){
-  if (Move.elem!=null) {
-    Move.elem.classList.remove("highlighted")
-    Move.elem.classList.add(Move.color)
-  }
+  console.log(highlights.length)
   for(let move of highlights){
-    if(move==-1||move==null) continue
+    if(move==undefined) continue
+    move.elem.classList.remove("highlighted")
+    move.elem.classList.add(move.elem.color)
     let con=damaGrid.querySelectorAll(".con")[move.y*WIDTH+move.x]
     let hl=con.querySelector(".highlight")
     con.removeChild(con.childNodes[0])
@@ -363,9 +371,9 @@ function updateScores() {
   cHandler.setCookie("P2Score",whiteScore)
 }
 function checkWinner() {
-  const pieces = damaGrid.querySelectorAll(".piece");
   let blackCount = 0, whiteCount = 0;
-  pieces.forEach(piece => {
+  let pieces=document.querySelectorAll(".piece");
+  pieces.forEach(piece =>{
     if (piece.color === "black") {
       blackCount++;
     } else if (piece.color === "white") {
@@ -385,18 +393,6 @@ function checkWinner() {
   }
 }
 
-//experiment with cookies
-var keys=["Name","Age","Nationality"]
-cHandler.initCookies(keys)
-function sampleCookies(){
-  keys.forEach(key=>{
-    console.log(cHandler.getCache(key))
-  })
-  cHandler.setCookie(keys[0],"Justin")
-  cHandler.setCookie(keys[1],20)
-  cHandler.setCookie(keys[2],"Filipino")
-}
-
 //retaining prev scores from cookies
 function initScores(){
   cHandler.initCookies(["P1Score","P2Score"])
@@ -405,8 +401,56 @@ function initScores(){
   updateScores()
 }
 
+function chooseMode(){
+  resizeOverlay();
+  menuOverlay.style.display="flex"
+}
+function resizeOverlay(){
+  menuOverlay.style.width=`${damaGrid.offsetWidth}px`
+  menuOverlay.style.height=`${damaGrid.offsetHeight}px`
+  menuOverlay.style.top=damaGrid.getBoundingClientRect().top+"px"
+  menuOverlay.style.left=damaGrid.getBoundingClientRect().left+"px"
+}
+function setPlayer(n){
+  menuOverlay.style.display="none"
+  switch(n){
+    case 1:
+      againstComputer=true
+  }
+}
+function startTurn(){
+  if(againstComputer&&turnOf==computerTurn){
+    let allPossibleMoves=[]
+    let count=0
+    let pieces = document.querySelectorAll(".piece")
+    console.log(pieces)
+    for(let piece of pieces){
+      turnOf=(turnOf+1)%2
+      if(piece.color==colors[(turnOf+1)%2]) continue
+      initMoves(piece)
+      for(let move of highlights){
+        if(move===undefined) continue
+        allPossibleMoves[count++]=move
+      }
+    }
+    console.log(allPossibleMoves)
+    console.log(Math.random()*allPossibleMoves.length)
+    let selectedmove=allPossibleMoves[Math.floor(Math.random()*allPossibleMoves.length),1]
+    highlights=allPossibleMoves
+    selectedmove.highlight.click()
+    removeHighlights()
+  }
+}
+window.addEventListener('resize',(e)=>{
+  console.log("hello")
+  menuOverlay.style.width=`${damaGrid.offsetWidth}px`
+  menuOverlay.style.height=`${damaGrid.offsetHeight}px`
+  menuOverlay.style.top=damaGrid.getBoundingClientRect().top+"px"
+  menuOverlay.style.left=damaGrid.getBoundingClientRect().left+"px"
+})
 //Calls
+
+chooseMode()
 resetGame()
 initScores()
-sampleCookies()
 updateScores()
