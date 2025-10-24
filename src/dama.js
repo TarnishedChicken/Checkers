@@ -109,7 +109,7 @@ musicSelect.addEventListener("change", () => {
   const selectedSrc = musicSelect.value;
   currentTrackIndex = musicTracks.indexOf(selectedSrc);
   if (currentTrackIndex === -1) currentTrackIndex = 0;
-  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
+  music.src = "./res/bgm/"+musicTracks[currentTrackIndex];
   music.play();
 });
 // ======== volume on load ========
@@ -118,7 +118,7 @@ window.addEventListener("DOMContentLoaded", () => {
   music.volume = 0.5;
   music.muted = false;
   currentTrackIndex = 0;
-  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
+  music.src = "./res/bgm/"+musicTracks[currentTrackIndex];
   music.play();
 });
 // ======== play next track and loop ========
