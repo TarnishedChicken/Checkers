@@ -124,7 +124,7 @@ window.addEventListener("DOMContentLoaded", () => {
 // ======== play next track and loop ========
 music.addEventListener("ended", () => {
   currentTrackIndex = (currentTrackIndex + 1) % musicTracks.length;
-  music.src = "../res/bgm/"+musicTracks[currentTrackIndex];
+  music.src = "./res/bgm/"+musicTracks[currentTrackIndex];
   musicSelect.value = musicTracks[currentTrackIndex];
   music.play();
 });
