@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="icon/checker.png">
-  <link rel="stylesheet" href="board.css">
+  <link rel="stylesheet" href="css/board.css">
   <title>Checkers</title>
 </head>
 <body>
@@ -93,6 +93,7 @@
   </div>
 
   <!-- ==================== Music Player ==================== -->
+  <div class="centerer">
   <div id="musicPlayer">
     <label for="musicSelect">Music:</label>
     <select id="musicSelect">
@@ -109,6 +110,7 @@
     <button id="musicMute"><i class="ri-volume-up-fill"></i></button>
     <input type="range" id="musicVolume" min="0" max="1" step="0.01" value="0.5">
   </div>
+  </div>
 
   <div id="winnerModal">
     <div class="winner-content">
@@ -117,13 +119,13 @@
     </div>
   </div>
 
-  <audio src="8bit1.mp3" id="music"></audio>
-  <audio src="Vic.mp3" id="victoryMusic"></audio>
-  <audio src="damasfx.mp3" id="sfx"></audio>
-  <audio src="take.mp3" id="take"></audio>
-  <audio src="BKing.mp3" id="Bking"></audio>
+  <audio src="res/bgm/8bit1.mp3" id="music"></audio>
+  <audio src="res/sfx/Vic.mp3" id="victoryMusic"></audio>
+  <audio src="res/sfx/damasfx.mp3" id="sfx"></audio>
+  <audio src="res/sfx/take.mp3" id="take"></audio>
+  <audio src="res/sfx/BKing.mp3" id="Bking"></audio>
 
-  <script src="dama.js"></script>
+  <script src="src/dama.js"></script>
 </body>
 </html>
 
