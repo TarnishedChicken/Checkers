@@ -1,40 +1,5 @@
-//Classes
-  //Cookie handler for saving scores after closing game
-class CookieHandler{
-    constructor(){
-        this.caches=new Map()
-    }
-    setCookie(varKey, val,expDays=7,toCache=true){
-        const d=new Date()
-        d.setTime(d.getTime()+this.toMs(expDays))
-        document.cookie=`${varKey}=${val}; expires=${d.toUTCString()}; path=/`
-        if(toCache) this.caches.set(varKey,val)
-    }
-    getCookie(varKey, toCache=false){
-        let cookies=decodeURIComponent(document.cookie).split(";")
-        for(let cookie of cookies){
-            let ci=cookie.indexOf(varKey)
-            if(ci==-1) continue
-            let cval=cookie.substring(ci+1+varKey.length,cookie.length)
-            if(toCache) this.caches.set(varKey,cval)
-            return cval
-        }
-        if(toCache) this.caches.set(varKey,null)
-        return null
-    }
-    getCache(varKey){
-        return this.caches.get(varKey)
-    }
-    toMs(days){
-        return days*24*60*60*1000
-    }
-    initCookies(varKeys){
-        for(let varKey of varKeys){
-            this.getCookie(varKey,true)
-        }
-    }
-}
-  //Move for saving move type and pos
+import * as ch from "cookie-handler.js"
+//Move for saving move type and pos
 class Move{
  constructor(x,y,type){
    this.x=x
@@ -88,7 +53,7 @@ var blackScore = 0;
 var whiteScore = 0;
 var currentTrackIndex = 0;
 var isMuted = false;
-var cHandler=new CookieHandler()
+var cHandler=new ch.default()
 var repCount=0
 var againstComputer=false
 var computerTurn=1
@@ -395,8 +360,8 @@ function checkWinner() {
 //retaining prev scores from cookies
 function initScores(){
   cHandler.initCookies(["P1Score","P2Score"])
-  blackScore=parseInt(cHandler.getCache("P1Score"))
-  whiteScore=parseInt(cHandler.getCache("P2Score"))
+  blackScore=(cHandler.getCache("P1Score")==null)? 0:parseInt(cHandler.getCache("P1Score"))
+  whiteScore=(cHandler.getCache("P1Score")==null)? 0:parseInt(cHandler.getCache("P2Score"))
   updateScores()
 }
 

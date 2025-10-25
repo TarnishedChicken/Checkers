@@ -1,4 +1,4 @@
-class CookieHandler{
+export default class CookieHandler{
     constructor(){
         this.caches=new Map()
     }
