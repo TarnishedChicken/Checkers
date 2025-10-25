@@ -431,6 +431,7 @@ function startTurn(elem){
     if(locked) {
       removeHighlights()
       initMoves(elem,true)
+      picked=elem
       highlights[0].highlight.click()
       removeHighlights()
       return
