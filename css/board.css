@@ -50,8 +50,8 @@
     aspect-ratio: 1/1;
   }
   .piece{
-    width:75%;
-    height:75%;
+    width:70%;
+    height:70%;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -76,8 +76,8 @@
     background-color: #E8D2AF;
   }
   .highlight{
-    width:80%;
-    height:80%;
+    width:70%;
+    height:70%;
     background-color: rgba(0, 255, 0, 0.40);
     border-radius: 50%;
   }
@@ -99,7 +99,7 @@
   }
   .king-icon{
     color:gold;
-    font-size:23px;
+    font-size:20px;
     background-color: transparent;
     pointer-events: auto;
   }
