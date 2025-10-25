@@ -1,4 +1,38 @@
-import * as ch from "cookie-handler.js"
+//import * as ch from "./cookie-handler.js"
+class CookieHandler{
+    constructor(){
+        this.caches=new Map()
+    }
+    setCookie(varKey, val,expDays,toCache=true){
+        const d=new Date()
+        d.setTime(d.getTime()+this.toMs(expDays))
+        document.cookie=`${varKey}=${val}; expires=${d.toUTCString()}; path=/`
+        if(toCache) this.caches.set(varKey,val)
+    }
+    getCookie(varKey, toCache=false){
+        let cookies=decodeURIComponent(document.cookie).split(";")
+        for(let cookie of cookies){
+            let ci=cookie.indexOf(varKey)
+            if(ci==-1) continue
+            let cval=cookie.substring(ci+varKey.length+1,cookie.length)
+            if(toCache) this.caches.set(varKey,cval)
+            return cval
+        }
+        if(toCache) this.caches.set(keyVal,null)
+        return null
+    }
+    getCache(varKey){
+        return this.caches.get(varKey)
+    }
+    toMs(days){
+        return days*24*60*60*1000
+    }
+    initCookies(varKeys){
+        for(let varKey of varKeys){
+            this.getCookie(varKey,true)
+        }
+    }
+}
 //Move for saving move type and pos
 class Move{
  constructor(x,y,type){
@@ -53,10 +87,11 @@ var blackScore = 0;
 var whiteScore = 0;
 var currentTrackIndex = 0;
 var isMuted = false;
-var cHandler=new ch.default()
+var cHandler=new CookieHandler()
 var repCount=0
 var againstComputer=false
 var computerTurn=1
+var picked=null
 
 //init events
 restartBtn.addEventListener("click",() =>resetGame())
@@ -124,8 +159,8 @@ function resetGame(){
         damasfx.currentTime=0.5
         damasfx.play()
         removeHighlights()
-        piece.classList.remove(piece.color);
-        piece.classList.add("highlighted")
+        picked=piece;
+        highlightPiece(picked)
         initMoves(e.target)
       })
       damaGrid.querySelectorAll(".con")[i*8+j%8].appendChild(piece)
@@ -316,18 +351,24 @@ function checkKing(elem){
 
 //Removes highlights after a move or a different piece is picked
 function removeHighlights(){
-  console.log(highlights.length)
+  if(picked!=null)highlightPiece(false)
   for(let move of highlights){
     if(move==undefined) continue
-    move.elem.classList.remove("highlighted")
-    move.elem.classList.add(move.elem.color)
     let con=damaGrid.querySelectorAll(".con")[move.y*WIDTH+move.x]
     let hl=con.querySelector(".highlight")
     con.removeChild(con.childNodes[0])
   }
   highlights=[]
 }
-
+function highlightPiece(tof=true){
+  if(tof){
+    picked.classList.remove(picked.color);
+    picked.classList.add("highlighted")
+  }else{
+    picked.classList.remove("highlighted")
+    picked.classList.add(picked.color)
+  }
+}
 function updateScores() {
   blackScoreElem.textContent = blackScore;
   whiteScoreElem.textContent = whiteScore;
@@ -360,8 +401,8 @@ function checkWinner() {
 //retaining prev scores from cookies
 function initScores(){
   cHandler.initCookies(["P1Score","P2Score"])
-  blackScore=(cHandler.getCache("P1Score")==null)? 0:parseInt(cHandler.getCache("P1Score"))
-  whiteScore=(cHandler.getCache("P1Score")==null)? 0:parseInt(cHandler.getCache("P2Score"))
+  blackScore=(cHandler.getCache("P1Score")=="NaN")? 0:parseInt(cHandler.getCache("P1Score"))
+  whiteScore=(cHandler.getCache("P2Score")=="NaN")? 0:parseInt(cHandler.getCache("P2Score"))
   updateScores()
 }
 
@@ -403,13 +444,16 @@ function startTurn(elem){
       }
     }
     let selectedmove=allPossibleMoves[Math.floor(Math.random()*allPossibleMoves.length)]
+    if (allPossibleMoves.length==0) {
+      checkWinner()
+      return
+    }
     highlights=allPossibleMoves
     selectedmove.highlight.click()
     removeHighlights()
   }
 }
 window.addEventListener('resize',(e)=>{
-  console.log("hello")
   menuOverlay.style.width=`${damaGrid.offsetWidth}px`
   menuOverlay.style.height=`${damaGrid.offsetHeight}px`
   menuOverlay.style.top=damaGrid.getBoundingClientRect().top+"px"
