@@ -4,4 +4,4 @@ A browser-based Dama game, created for fun and enjoyment.
 Created by TarnishedChicken and Otternam
 
 Play online using link:
-    TarnishedChicken.github.io/Checkers
+    https://TarnishedChicken.github.io/Checkers
