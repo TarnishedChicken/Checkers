@@ -50,8 +50,8 @@
     aspect-ratio: 1/1;
   }
   .piece{
-    width:70%;
-    height:70%;
+    width:65%;
+    height:65%;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -76,8 +76,8 @@
     background-color: #E8D2AF;
   }
   .highlight{
-    width:70%;
-    height:70%;
+    width:67%;
+    height:67%;
     background-color: rgba(0, 255, 0, 0.40);
     border-radius: 50%;
   }
